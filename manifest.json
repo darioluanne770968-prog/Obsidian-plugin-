@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-local-ai",
+  "name": "Local AI Assistant",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Complete AI assistant powered by local LLMs (Ollama, LM Studio). Features: writing assistant, RAG search, auto-tagging, chat, OCR, voice input, and more.",
+  "author": "Your Name",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
