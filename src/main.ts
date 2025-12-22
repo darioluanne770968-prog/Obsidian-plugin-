@@ -28,6 +28,33 @@ import { AutomationWorkflows } from './features/AutomationWorkflows';
 import { ChatView, CHAT_VIEW_TYPE } from './ui/ChatView';
 import { LocalAISettings, DEFAULT_SETTINGS, LocalAISettingTab } from './settings';
 
+// Advanced Features
+import { ResearchAgent } from './features/ResearchAgent';
+import { AIPersonas } from './features/AIPersonas';
+import { SecondBrainAnalytics } from './features/SecondBrainAnalytics';
+import { SmartConnections } from './features/SmartConnections';
+import { LearningAssistant } from './features/LearningAssistant';
+import { PDFProcessor } from './features/PDFProcessor';
+import { TimeTravel } from './features/TimeTravel';
+
+// Super Advanced Features
+import { AIMemory } from './features/AIMemory';
+import { CreativeEngine } from './features/CreativeEngine';
+import { MetaCognition } from './features/MetaCognition';
+import { Gamification } from './features/Gamification';
+import { DailyBriefing } from './features/DailyBriefing';
+
+// New Features
+import { DreamJournalAnalyzer } from './features/DreamJournalAnalyzer';
+import { MeetingAssistant } from './features/MeetingAssistant';
+import { JournalingCoach } from './features/JournalingCoach';
+import { DecisionJournal } from './features/DecisionJournal';
+import { RelationshipManager } from './features/RelationshipManager';
+import { IdeaIncubator } from './features/IdeaIncubator';
+import { WritingAnalytics } from './features/WritingAnalytics';
+import { NoteQualityScorer } from './features/NoteQualityScorer';
+import { SmartArchiveAssistant } from './features/SmartArchiveAssistant';
+
 export default class LocalAIPlugin extends Plugin {
   settings: LocalAISettings;
 
@@ -36,7 +63,7 @@ export default class LocalAIPlugin extends Plugin {
   ragSearch: RAGSearch;
   smartQA: SmartQA;
 
-  // Features
+  // Basic Features
   writingAssistant: WritingAssistant;
   summarizer: NoteSummarizer;
   knowledgeGraph: KnowledgeGraph;
@@ -49,6 +76,33 @@ export default class LocalAIPlugin extends Plugin {
   imageProcessor: ImageProcessor;
   voiceInput: VoiceInput;
   automationWorkflows: AutomationWorkflows;
+
+  // Advanced Features
+  researchAgent: ResearchAgent;
+  aiPersonas: AIPersonas;
+  secondBrainAnalytics: SecondBrainAnalytics;
+  smartConnections: SmartConnections;
+  learningAssistant: LearningAssistant;
+  pdfProcessor: PDFProcessor;
+  timeTravel: TimeTravel;
+
+  // Super Advanced Features
+  aiMemory: AIMemory;
+  creativeEngine: CreativeEngine;
+  metaCognition: MetaCognition;
+  gamification: Gamification;
+  dailyBriefing: DailyBriefing;
+
+  // New Features
+  dreamJournalAnalyzer: DreamJournalAnalyzer;
+  meetingAssistant: MeetingAssistant;
+  journalingCoach: JournalingCoach;
+  decisionJournal: DecisionJournal;
+  relationshipManager: RelationshipManager;
+  ideaIncubator: IdeaIncubator;
+  writingAnalytics: WritingAnalytics;
+  noteQualityScorer: NoteQualityScorer;
+  smartArchiveAssistant: SmartArchiveAssistant;
 
   async onload() {
     await this.loadSettings();
@@ -95,6 +149,7 @@ export default class LocalAIPlugin extends Plugin {
   }
 
   private initializeFeatures() {
+    // Basic Features
     this.writingAssistant = new WritingAssistant(this.aiService);
     this.summarizer = new NoteSummarizer(this.aiService);
     this.ragSearch = new RAGSearch(this.aiService, this.app.vault, this.app.metadataCache);
@@ -113,6 +168,33 @@ export default class LocalAIPlugin extends Plugin {
       this.app.vault,
       this.app.metadataCache
     );
+
+    // Advanced Features
+    this.researchAgent = new ResearchAgent(this.aiService, this.ragSearch, this.app.vault);
+    this.aiPersonas = new AIPersonas(this.aiService);
+    this.secondBrainAnalytics = new SecondBrainAnalytics(this.aiService, this.app.vault, this.app.metadataCache);
+    this.smartConnections = new SmartConnections(this.aiService, this.ragSearch, this.app.vault);
+    this.learningAssistant = new LearningAssistant(this.aiService, this.app.vault);
+    this.pdfProcessor = new PDFProcessor(this.aiService, this.app.vault);
+    this.timeTravel = new TimeTravel(this.aiService, this.app.vault);
+
+    // Super Advanced Features
+    this.aiMemory = new AIMemory(this.aiService, this.app.vault);
+    this.creativeEngine = new CreativeEngine(this.aiService, this.ragSearch, this.app.vault);
+    this.metaCognition = new MetaCognition(this.aiService);
+    this.gamification = new Gamification(this.aiService, this.app.vault);
+    this.dailyBriefing = new DailyBriefing(this.aiService, this.app.vault, this.app.metadataCache);
+
+    // New Features
+    this.dreamJournalAnalyzer = new DreamJournalAnalyzer(this.aiService, this.app.vault);
+    this.meetingAssistant = new MeetingAssistant(this.aiService, this.app.vault);
+    this.journalingCoach = new JournalingCoach(this.aiService);
+    this.decisionJournal = new DecisionJournal(this.aiService, this.app.vault);
+    this.relationshipManager = new RelationshipManager(this.aiService, this.app.vault);
+    this.ideaIncubator = new IdeaIncubator(this.aiService, this.app.vault);
+    this.writingAnalytics = new WritingAnalytics(this.aiService, this.app.vault);
+    this.noteQualityScorer = new NoteQualityScorer(this.aiService, this.app.vault);
+    this.smartArchiveAssistant = new SmartArchiveAssistant(this.aiService, this.app.vault);
 
     // Load custom templates
     this.templates.setCustomTemplates(this.settings.customTemplates);
@@ -287,6 +369,297 @@ export default class LocalAIPlugin extends Plugin {
       id: 'ai-custom-prompt',
       name: 'AI: Custom Prompt',
       editorCallback: (editor: Editor) => this.showCustomPromptModal(editor),
+    });
+
+    // =====================
+    // Advanced Feature Commands
+    // =====================
+
+    // Research Agent
+    this.addCommand({
+      id: 'ai-research-topic',
+      name: 'AI: Research Topic',
+      callback: () => this.showResearchModal(),
+    });
+
+    // AI Personas
+    this.addCommand({
+      id: 'ai-select-persona',
+      name: 'AI: Select AI Persona',
+      callback: () => this.showPersonaModal(),
+    });
+
+    // Second Brain Analytics
+    this.addCommand({
+      id: 'ai-vault-analytics',
+      name: 'AI: Vault Analytics Dashboard',
+      callback: () => this.showAnalyticsDashboard(),
+    });
+
+    // Smart Connections
+    this.addCommand({
+      id: 'ai-discover-connections',
+      name: 'AI: Discover Hidden Connections',
+      callback: () => this.discoverConnections(),
+    });
+
+    // Learning Assistant
+    this.addCommand({
+      id: 'ai-spaced-repetition',
+      name: 'AI: Spaced Repetition Review',
+      callback: () => this.showSpacedRepetitionModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-generate-quiz',
+      name: 'AI: Generate Quiz',
+      callback: () => this.generateQuiz(),
+    });
+
+    // PDF Processor
+    this.addCommand({
+      id: 'ai-analyze-pdf',
+      name: 'AI: Analyze PDF',
+      callback: () => this.analyzePDF(),
+    });
+
+    // Time Travel
+    this.addCommand({
+      id: 'ai-note-evolution',
+      name: 'AI: View Note Evolution',
+      callback: () => this.showNoteEvolution(),
+    });
+
+    // =====================
+    // Super Advanced Feature Commands
+    // =====================
+
+    // AI Memory
+    this.addCommand({
+      id: 'ai-learn-from-notes',
+      name: 'AI: Learn From My Notes',
+      callback: () => this.learnFromNotes(),
+    });
+
+    // Creative Engine
+    this.addCommand({
+      id: 'ai-scamper',
+      name: 'AI: SCAMPER Creative Technique',
+      callback: () => this.showSCAMPERModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-force-connection',
+      name: 'AI: Force Random Connection',
+      callback: () => this.forceConnection(),
+    });
+
+    this.addCommand({
+      id: 'ai-six-hats',
+      name: 'AI: Six Thinking Hats Analysis',
+      callback: () => this.showSixHatsModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-oblique-strategy',
+      name: 'AI: Get Oblique Strategy',
+      callback: () => this.showObliqueStrategy(),
+    });
+
+    // MetaCognition
+    this.addCommand({
+      id: 'ai-detect-biases',
+      name: 'AI: Detect Cognitive Biases',
+      callback: () => this.detectBiases(),
+    });
+
+    this.addCommand({
+      id: 'ai-analyze-arguments',
+      name: 'AI: Analyze Arguments',
+      callback: () => this.analyzeArguments(),
+    });
+
+    // Gamification
+    this.addCommand({
+      id: 'ai-show-progress',
+      name: 'AI: Show Progress & Achievements',
+      callback: () => this.showGamificationModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-daily-quests',
+      name: 'AI: View Daily Quests',
+      callback: () => this.showDailyQuests(),
+    });
+
+    // Daily Briefing
+    this.addCommand({
+      id: 'ai-daily-briefing',
+      name: 'AI: Generate Daily Briefing',
+      callback: () => this.generateDailyBriefing(),
+    });
+
+    this.addCommand({
+      id: 'ai-weekly-digest',
+      name: 'AI: Generate Weekly Digest',
+      callback: () => this.generateWeeklyDigest(),
+    });
+
+    // =====================
+    // New Feature Commands
+    // =====================
+
+    // Dream Journal
+    this.addCommand({
+      id: 'ai-analyze-dream',
+      name: 'AI: Analyze Dream Entry',
+      callback: () => this.analyzeDream(),
+    });
+
+    this.addCommand({
+      id: 'ai-dream-patterns',
+      name: 'AI: View Dream Patterns',
+      callback: () => this.showDreamPatterns(),
+    });
+
+    // Meeting Assistant
+    this.addCommand({
+      id: 'ai-prepare-meeting',
+      name: 'AI: Prepare for Meeting',
+      callback: () => this.showMeetingPrepModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-process-meeting-notes',
+      name: 'AI: Process Meeting Notes',
+      callback: () => this.processMeetingNotes(),
+    });
+
+    // Journaling Coach
+    this.addCommand({
+      id: 'ai-journal-prompt',
+      name: 'AI: Get Journaling Prompt',
+      callback: () => this.getJournalingPrompt(),
+    });
+
+    this.addCommand({
+      id: 'ai-morning-pages',
+      name: 'AI: Start Morning Pages',
+      callback: () => this.startMorningPages(),
+    });
+
+    this.addCommand({
+      id: 'ai-evening-reflection',
+      name: 'AI: Evening Reflection',
+      callback: () => this.startEveningReflection(),
+    });
+
+    this.addCommand({
+      id: 'ai-guided-journaling',
+      name: 'AI: Guided Journaling Session',
+      callback: () => this.showGuidedJournalingModal(),
+    });
+
+    // Decision Journal
+    this.addCommand({
+      id: 'ai-new-decision',
+      name: 'AI: Create New Decision Entry',
+      callback: () => this.showNewDecisionModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-review-decisions',
+      name: 'AI: Review Past Decisions',
+      callback: () => this.showDecisionReviewModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-decision-analytics',
+      name: 'AI: Decision Analytics',
+      callback: () => this.showDecisionAnalytics(),
+    });
+
+    // Relationship Manager
+    this.addCommand({
+      id: 'ai-extract-people',
+      name: 'AI: Extract People from Notes',
+      callback: () => this.extractPeopleFromNotes(),
+    });
+
+    this.addCommand({
+      id: 'ai-relationship-insights',
+      name: 'AI: Relationship Insights',
+      callback: () => this.showRelationshipInsights(),
+    });
+
+    this.addCommand({
+      id: 'ai-network-analysis',
+      name: 'AI: Network Analysis',
+      callback: () => this.showNetworkAnalysis(),
+    });
+
+    // Idea Incubator
+    this.addCommand({
+      id: 'ai-capture-idea',
+      name: 'AI: Capture New Idea',
+      callback: () => this.showCaptureIdeaModal(),
+    });
+
+    this.addCommand({
+      id: 'ai-incubator-dashboard',
+      name: 'AI: Idea Incubator Dashboard',
+      callback: () => this.showIdeaIncubatorDashboard(),
+    });
+
+    this.addCommand({
+      id: 'ai-combine-ideas',
+      name: 'AI: Combine Random Ideas',
+      callback: () => this.combineRandomIdeas(),
+    });
+
+    // Writing Analytics
+    this.addCommand({
+      id: 'ai-writing-stats',
+      name: 'AI: Writing Statistics',
+      callback: () => this.showWritingStats(),
+    });
+
+    this.addCommand({
+      id: 'ai-writing-patterns',
+      name: 'AI: Analyze Writing Patterns',
+      callback: () => this.analyzeWritingPatterns(),
+    });
+
+    // Note Quality
+    this.addCommand({
+      id: 'ai-score-note',
+      name: 'AI: Score Current Note Quality',
+      callback: () => this.scoreCurrentNote(),
+    });
+
+    this.addCommand({
+      id: 'ai-vault-health',
+      name: 'AI: Vault Health Report',
+      callback: () => this.generateVaultHealthReport(),
+    });
+
+    // Smart Archive
+    this.addCommand({
+      id: 'ai-cleanup-suggestions',
+      name: 'AI: Get Cleanup Suggestions',
+      callback: () => this.showCleanupSuggestions(),
+    });
+
+    this.addCommand({
+      id: 'ai-find-duplicates',
+      name: 'AI: Find Duplicate Notes',
+      callback: () => this.findDuplicateNotes(),
+    });
+
+    this.addCommand({
+      id: 'ai-archive-candidates',
+      name: 'AI: Find Archive Candidates',
+      callback: () => this.findArchiveCandidates(),
     });
   }
 
@@ -763,6 +1136,474 @@ export default class LocalAIPlugin extends Plugin {
     await this.saveData(this.settings);
     this.aiService.updateSettings(this.settings);
     this.voiceInput.updateSettings(this.settings);
+  }
+
+  // =====================
+  // Advanced Feature Handlers
+  // =====================
+
+  private showResearchModal() {
+    new Notice('Research Agent: Enter a topic to research');
+    // Implementation for research modal
+  }
+
+  private showPersonaModal() {
+    new Notice('Select an AI Persona for your conversation');
+    // Implementation for persona selection
+  }
+
+  private async showAnalyticsDashboard() {
+    new Notice('Generating analytics...');
+    try {
+      const analytics = await this.secondBrainAnalytics.generateFullAnalysis();
+      const markdown = this.secondBrainAnalytics.formatAnalysisAsMarkdown(analytics);
+      await this.app.vault.create('AI Analytics Dashboard.md', markdown);
+      new Notice('Analytics dashboard created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async discoverConnections() {
+    new Notice('Discovering hidden connections...');
+    try {
+      const connections = await this.smartConnections.discoverHiddenConnections(5);
+      if (connections.length > 0) {
+        new Notice(`Found ${connections.length} hidden connections!`);
+      } else {
+        new Notice('No hidden connections found. Try indexing more notes.');
+      }
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showSpacedRepetitionModal() {
+    new Notice('Loading spaced repetition cards...');
+    // Implementation for spaced repetition
+  }
+
+  private async generateQuiz() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Generating quiz...');
+    try {
+      const content = await this.app.vault.read(file);
+      const quiz = await this.learningAssistant.generateQuiz(content, 5);
+      const quizPath = file.path.replace('.md', ' - Quiz.md');
+      await this.app.vault.create(quizPath, this.learningAssistant.formatQuizAsMarkdown(quiz));
+      new Notice('Quiz created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private analyzePDF() {
+    new Notice('PDF analysis: Select a PDF file');
+    // Implementation for PDF analysis
+  }
+
+  private async showNoteEvolution() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Analyzing note evolution...');
+    // Implementation for note evolution view
+  }
+
+  // =====================
+  // Super Advanced Feature Handlers
+  // =====================
+
+  private async learnFromNotes() {
+    new Notice('Learning from your notes...');
+    try {
+      await this.aiMemory.learnFromNotes(50);
+      new Notice('AI has learned from your writing patterns!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showSCAMPERModal() {
+    new Notice('Enter a concept for SCAMPER analysis');
+    // Implementation for SCAMPER modal
+  }
+
+  private async forceConnection() {
+    new Notice('Creating forced connection between random notes...');
+    try {
+      const connection = await this.creativeEngine.forceConnection();
+      const markdown = `# Forced Connection\n\n## ${connection.concept1} ↔ ${connection.concept2}\n\n${connection.connections.map(c => `### ${c.type}\n${c.explanation}\n\n**New Idea:** ${c.newIdea}`).join('\n\n')}\n\n## Combined Insight\n${connection.combinedInsight}`;
+      await this.app.vault.create(`Forced Connection - ${Date.now()}.md`, markdown);
+      new Notice('Forced connection created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showSixHatsModal() {
+    new Notice('Enter a problem for Six Thinking Hats analysis');
+    // Implementation for Six Hats modal
+  }
+
+  private async showObliqueStrategy() {
+    try {
+      const strategy = await this.creativeEngine.obliqueStrategy();
+      new Notice(`Strategy: "${strategy.strategy}"\n\n${strategy.interpretation}`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async detectBiases() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Detecting cognitive biases...');
+    try {
+      const content = await this.app.vault.read(file);
+      const analysis = await this.metaCognition.detectBiases(content);
+      if (analysis.detectedBiases.length > 0) {
+        new Notice(`Found ${analysis.detectedBiases.length} potential biases`);
+      } else {
+        new Notice('No significant biases detected');
+      }
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async analyzeArguments() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Analyzing arguments...');
+    try {
+      const content = await this.app.vault.read(file);
+      const analysis = await this.metaCognition.analyzeArgument(content);
+      new Notice(`Found ${analysis.premises.length} premises supporting ${analysis.conclusions.length} conclusions`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showGamificationModal() {
+    new Notice('Loading progress...');
+    try {
+      const profile = this.gamification.getUserProfile();
+      new Notice(`Level ${profile.level} | ${profile.currentXP}/${profile.xpToNextLevel} XP`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showDailyQuests() {
+    new Notice('Loading daily quests...');
+    try {
+      const quests = this.gamification.getDailyQuests();
+      new Notice(`${quests.filter(q => q.progress >= q.target).length}/${quests.length} quests completed today`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async generateDailyBriefing() {
+    new Notice('Generating daily briefing...');
+    try {
+      const briefing = await this.dailyBriefing.generateDailyBriefing();
+      const markdown = this.dailyBriefing.formatBriefingAsMarkdown(briefing);
+      await this.app.vault.create(`Daily Briefing - ${new Date().toISOString().split('T')[0]}.md`, markdown);
+      new Notice('Daily briefing created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async generateWeeklyDigest() {
+    new Notice('Generating weekly digest...');
+    try {
+      const digest = await this.dailyBriefing.generateWeeklyDigest();
+      const markdown = this.dailyBriefing.formatDigestAsMarkdown(digest);
+      await this.app.vault.create(`Weekly Digest - ${new Date().toISOString().split('T')[0]}.md`, markdown);
+      new Notice('Weekly digest created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  // =====================
+  // New Feature Handlers
+  // =====================
+
+  private async analyzeDream() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Analyzing dream...');
+    try {
+      const content = await this.app.vault.read(file);
+      const analysis = await this.dreamJournalAnalyzer.analyzeDream(content);
+      const summary = `Mood: ${analysis.interpretation}\nSymbols: ${analysis.symbols.join(', ')}\nThemes: ${analysis.themes.join(', ')}`;
+      new Notice(summary);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showDreamPatterns() {
+    new Notice('Analyzing dream patterns...');
+    try {
+      const patterns = await this.dreamJournalAnalyzer.findPatterns();
+      if (patterns.length > 0) {
+        new Notice(`Found ${patterns.length} recurring patterns in your dreams`);
+      } else {
+        new Notice('Record more dreams to see patterns');
+      }
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showMeetingPrepModal() {
+    new Notice('Meeting Prep: Enter meeting details');
+    // Implementation for meeting prep modal
+  }
+
+  private async processMeetingNotes() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Processing meeting notes...');
+    try {
+      const content = await this.app.vault.read(file);
+      const notes = await this.meetingAssistant.processRawNotes(content, file.basename);
+      const markdown = this.meetingAssistant.formatMeetingNotesAsMarkdown(notes);
+      await this.app.vault.modify(file, markdown);
+      new Notice('Meeting notes processed!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async getJournalingPrompt() {
+    try {
+      const prompt = await this.journalingCoach.generatePrompt();
+      new Notice(`Journal Prompt: ${prompt.prompt}`);
+      this.insertAtCursor(`\n\n> ${prompt.prompt}\n\n`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async startMorningPages() {
+    try {
+      const prompts = await this.journalingCoach.generateMorningPages();
+      const content = `# Morning Pages - ${new Date().toISOString().split('T')[0]}\n\n${prompts.map(p => `## ${p}\n\n`).join('')}`;
+      await this.app.vault.create(`Morning Pages - ${new Date().toISOString().split('T')[0]}.md`, content);
+      new Notice('Morning pages template created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async startEveningReflection() {
+    try {
+      const prompts = await this.journalingCoach.generateEveningReflection();
+      const content = `# Evening Reflection - ${new Date().toISOString().split('T')[0]}\n\n${prompts.map(p => `## ${p}\n\n`).join('')}`;
+      await this.app.vault.create(`Evening Reflection - ${new Date().toISOString().split('T')[0]}.md`, content);
+      new Notice('Evening reflection template created!');
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showGuidedJournalingModal() {
+    new Notice('Select a journaling topic');
+    // Implementation for guided journaling modal
+  }
+
+  private showNewDecisionModal() {
+    new Notice('Enter decision details');
+    // Implementation for new decision modal
+  }
+
+  private showDecisionReviewModal() {
+    new Notice('Loading decisions for review...');
+    // Implementation for decision review modal
+  }
+
+  private async showDecisionAnalytics() {
+    new Notice('Generating decision analytics...');
+    try {
+      const analytics = await this.decisionJournal.generateAnalytics();
+      new Notice(`${analytics.totalDecisions} decisions tracked | ${Math.round(analytics.accuracyRate * 100)}% accuracy`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async extractPeopleFromNotes() {
+    new Notice('Extracting people from notes...');
+    try {
+      const people = await this.relationshipManager.extractPeopleFromNotes();
+      new Notice(`Found ${people.length} people in your notes`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showRelationshipInsights() {
+    new Notice('Generating relationship insights...');
+    try {
+      const insights = await this.relationshipManager.getRelationshipInsights();
+      if (insights.length > 0) {
+        new Notice(`${insights.length} relationship insights available`);
+      } else {
+        new Notice('No insights available. Add more interactions first.');
+      }
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showNetworkAnalysis() {
+    new Notice('Analyzing your network...');
+    try {
+      const analysis = await this.relationshipManager.generateNetworkAnalysis();
+      new Notice(`${analysis.totalContacts} contacts | ${analysis.strongRelationships.length} strong relationships`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private showCaptureIdeaModal() {
+    new Notice('Enter your idea');
+    // Implementation for idea capture modal
+  }
+
+  private async showIdeaIncubatorDashboard() {
+    new Notice('Loading idea incubator...');
+    try {
+      const ideas = this.ideaIncubator.getAllIdeas();
+      const highPotential = this.ideaIncubator.getHighPotentialIdeas();
+      new Notice(`${ideas.length} ideas | ${highPotential.length} high potential`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async combineRandomIdeas() {
+    new Notice('Combining random ideas...');
+    try {
+      const ideas = this.ideaIncubator.getAllIdeas();
+      if (ideas.length < 2) {
+        new Notice('Need at least 2 ideas to combine');
+        return;
+      }
+      const idx1 = Math.floor(Math.random() * ideas.length);
+      let idx2 = Math.floor(Math.random() * ideas.length);
+      while (idx2 === idx1) idx2 = Math.floor(Math.random() * ideas.length);
+
+      const combined = await this.ideaIncubator.combineIdeas(ideas[idx1].id, ideas[idx2].id);
+      if (combined) {
+        new Notice(`New idea created: ${combined.title}`);
+      }
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showWritingStats() {
+    new Notice('Generating writing statistics...');
+    try {
+      const stats = await this.writingAnalytics.generateFullStats();
+      new Notice(`${stats.totalWords.toLocaleString()} words | ${stats.totalNotes} notes | ${stats.writingStreak} day streak`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async analyzeWritingPatterns() {
+    new Notice('Analyzing writing patterns...');
+    try {
+      const patterns = await this.writingAnalytics.analyzeWritingPatterns();
+      new Notice(`Most productive: ${patterns.mostProductiveDay} at ${patterns.mostProductiveHour}:00`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async scoreCurrentNote() {
+    const file = this.app.workspace.getActiveFile();
+    if (!file) {
+      new Notice('No active note');
+      return;
+    }
+    new Notice('Scoring note quality...');
+    try {
+      const score = await this.noteQualityScorer.scoreNote(file);
+      new Notice(`Grade: ${score.grade} (${score.overall}/100)`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async generateVaultHealthReport() {
+    new Notice('Generating vault health report...');
+    try {
+      const report = await this.noteQualityScorer.generateVaultHealthReport();
+      const markdown = this.noteQualityScorer.formatReportAsMarkdown(report);
+      await this.app.vault.create(`Vault Health Report - ${new Date().toISOString().split('T')[0]}.md`, markdown);
+      new Notice(`Report created! Health score: ${report.healthScore}/100`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async showCleanupSuggestions() {
+    new Notice('Generating cleanup suggestions...');
+    try {
+      const report = await this.smartArchiveAssistant.generateCleanupReport();
+      const markdown = this.smartArchiveAssistant.formatReportAsMarkdown(report);
+      await this.app.vault.create(`Cleanup Report - ${new Date().toISOString().split('T')[0]}.md`, markdown);
+      new Notice(`Report created! ${report.archiveCandidates.length} notes to archive`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async findDuplicateNotes() {
+    new Notice('Finding duplicate notes...');
+    try {
+      const duplicates = await this.smartArchiveAssistant.findDuplicates();
+      new Notice(`Found ${duplicates.length} duplicate groups`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
+  }
+
+  private async findArchiveCandidates() {
+    new Notice('Finding archive candidates...');
+    try {
+      const candidates = await this.smartArchiveAssistant.findArchiveCandidates();
+      new Notice(`Found ${candidates.length} notes to consider archiving`);
+    } catch (error) {
+      new Notice(`Error: ${(error as Error).message}`);
+    }
   }
 
   onunload() {
