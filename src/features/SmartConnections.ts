@@ -374,7 +374,7 @@ Make it scannable and well-organized.`,
 
     // Calculate stats
     let totalEdges = 0;
-    const connectionCounts: { path: string; count: number }[] = [];
+    const connectionCounts: { path: string; connections: number }[] = [];
     const orphans: string[] = [];
 
     for (const [path, links] of connections) {
@@ -383,14 +383,14 @@ Make it scannable and well-organized.`,
       const total = outgoing + incoming;
 
       totalEdges += outgoing;
-      connectionCounts.push({ path, count: total });
+      connectionCounts.push({ path, connections: total });
 
       if (total === 0) {
         orphans.push(path);
       }
     }
 
-    connectionCounts.sort((a, b) => b.count - a.count);
+    connectionCounts.sort((a, b) => b.connections - a.connections);
 
     return {
       stats: {

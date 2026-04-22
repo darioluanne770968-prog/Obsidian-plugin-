@@ -93,7 +93,11 @@ export class SecondBrainAnalytics {
     for (const file of files) {
       const cache = this.metadataCache.getFileCache(file);
       const links = cache?.links?.length || 0;
-      const backlinks = this.metadataCache.getBacklinksForFile(file)?.count() || 0;
+      // Count backlinks manually by checking which files link to this file
+      const backlinks = files.filter(f => {
+        const fCache = this.metadataCache.getFileCache(f);
+        return fCache?.links?.some(l => l.link === file.basename) || false;
+      }).length;
 
       totalLinks += links;
       totalBacklinks += backlinks;
